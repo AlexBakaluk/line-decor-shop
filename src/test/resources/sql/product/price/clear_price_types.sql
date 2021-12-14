@@ -1,0 +1,1 @@
+truncate table price_type cascade;
