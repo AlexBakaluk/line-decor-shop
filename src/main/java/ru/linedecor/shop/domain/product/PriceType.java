@@ -18,15 +18,7 @@ import java.util.Objects;
 public class PriceType {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "price_type_sequence"
-    )
-    @SequenceGenerator(
-            name = "price_type_sequence",
-            sequenceName = "price_type_sequence",
-            allocationSize = 3
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true, nullable = false)

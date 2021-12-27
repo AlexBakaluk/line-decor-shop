@@ -3,6 +3,7 @@ package ru.linedecor.shop.integration.product.price;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import ru.linedecor.shop.domain.product.PriceType;
 import ru.linedecor.shop.repository.product.price.PriceTypeRepository;
@@ -28,8 +30,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Sql(scripts = {"classpath:sql/product/price/fill_price_types.sql"})
-@Sql(scripts = {"classpath:sql/product/price/clear_price_types.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @SpringBootTest
 @WebAppConfiguration
 public class ProductTypeIntegrationTest {
@@ -56,6 +56,17 @@ public class ProductTypeIntegrationTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+        repository.save(new PriceType(null, "Цена продажи"));
+        repository.save(new PriceType(null, "Цена закупки"));
+        repository.save(new PriceType(null, "Оптовая цена"));
+        repository.save(new PriceType(null, "Цена WB"));
+        repository.save(new PriceType(null, "Цена Ozon"));
+        SQLStatementCountValidator.reset();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        repository.deleteAll();
         SQLStatementCountValidator.reset();
     }
 
@@ -75,13 +86,13 @@ public class ProductTypeIntegrationTest {
         verify(service, times(1)).getAllTypes();
         verifyNoMoreInteractions(service);
         verify(repository, times(1)).getAllTypesProjections();
-        verifyNoMoreInteractions(repository);
     }
 
-    @Sql(scripts = {"classpath:sql/product/price/clear_price_types.sql"})
     @Test
     @SneakyThrows
     public void givenGetAllTypes_whenTableIsEmpty_thenShouldReturnStatusNoContentWithMessage() {
+        repository.deleteAll();
+        SQLStatementCountValidator.reset();
         mockMvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())

@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create address table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKeyName: address_pk
+                    primaryKey: true
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: region
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: house_number
+                  type: VARCHAR(10)
+              - column:
+                  name: building_number
+                  type: VARCHAR(10)
+              - column:
+                  name: room_number
+                  type: VARCHAR(10)
+      rollback:
+        - dropTable:
+            tableName: address
+
+  - changeSet:
+      id: Create phone number table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: phone_number
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: phone_number_pk
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  name: country_code
+                  type: VARCHAR(10)
+              - column:
+                  name: city_code
+                  type: VARCHAR(10)
+              - column:
+                  name: number
+                  type: VARCHAR(20)
+      rollback:
+        - dropTable:
+            tableName: phone_number
+
+  - changeSet:
+      id: Add unique constrain to phone number table on columns (country_code, city_code, number)
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: phone_number
+            constraintName: phone_number_uq
+            columnNames: country_code, city_code, number
+      rollback:
+        - dropUniqueConstraint:
+            tableName: phone_number
+            constraintName: phone_number_uq

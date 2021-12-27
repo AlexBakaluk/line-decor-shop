@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      context: dev or test
+      id: Create product category table
+      author: Alex Bakaluk
+      changes:
+        - createTable:
+            tableName: product_category
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_category_pk
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: product_category_name_uq
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    foreignKeyName: product_category_parent_category_fk
+                    referencedTableName: product_category
+                    referencedColumnNames: id
+                  name: parent_category_id
+                  type: INT
+      rollback:
+        - dropTable:
+            tableName: product_category
+
+  - changeSet:
+      context: dev or test
+      id: Add column category_id on product table
+      author: Alex Bakaluk
+      changes:
+        - addColumn:
+            tableName: product
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: product_category_fk
+                    referencedTableName: product_category
+                    referencedColumnNames: id
+                  name: category_id
+                  type: INT
+      rollback:
+        - dropColumn:
+            tableName: product
+            columns:
+              - column:
+                  name: category_id

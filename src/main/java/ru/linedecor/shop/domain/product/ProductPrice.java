@@ -1,11 +1,9 @@
 package ru.linedecor.shop.domain.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Currency;
 
 @Getter
@@ -16,6 +14,7 @@ import java.util.Currency;
 @Table(name = "product_price")
 public class ProductPrice {
 
+    @ToString.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +25,8 @@ public class ProductPrice {
     @JoinColumn(name = "price_type_id")
     private PriceType priceType;
 
-
+    @Column(nullable = false)
+    private BigDecimal price;
 
     @ManyToOne(
             fetch = FetchType.LAZY

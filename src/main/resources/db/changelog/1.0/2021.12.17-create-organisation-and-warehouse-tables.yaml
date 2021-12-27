@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create organisation table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: organisation
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: organisation_pk
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: organisation_name_uq
+                  name: name
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: organisation
+
+  - changeSet:
+      id: Create warehouse table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: warehouse
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: warehouse_pk
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: warehouse_name_uq
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse_address_fk
+                    referencedTableName: address
+                    referencedColumnNames: id
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    foreignKeyName: phone_number
+                    referencedTableName: phone_number
+                    referencedColumnNames: id
+                  name: phone_number_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse_organisation_fk
+                    referencedTableName: organisation
+                    referencedColumnNames: id
+                  name: organisation_id
+                  type: INT
+
+      rollback:
+        - dropTable:
+            tableName: warehouse

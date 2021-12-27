@@ -1,11 +1,10 @@
 package ru.linedecor.shop.domain.product;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -29,14 +28,22 @@ public class Product {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @PrimaryKeyJoinColumn
     private ProductDetails details;
+
+//    @ManyToOne(
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL
+//    )
+//    @JoinColumn(name = "image_id")
+//    private ProductImage rootImage;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE }
     )
-    @JoinColumn(name = "image_id")
-    private ProductImage rootImage;
+    @JoinColumn(name = "category_id")
+    private ProductCategory category;
 
 
 }

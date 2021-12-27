@@ -106,7 +106,7 @@ public class OrganisationControllerTest {
 
         ORGANISATIONS_LIST.addAll(List.of(firstOrg, secondOrg, thirdOrg));
 
-        CREATED_ORGANISATION = new Organisation(5L, "Created", List.of(new Warehouse(1L, "Default", null, null, CREATED_ORGANISATION)));
+        CREATED_ORGANISATION = new Organisation(5, "Created", List.of(new Warehouse(1, "Default", null, null, CREATED_ORGANISATION)));
     }
 
     @DisplayName("Should return full organisation list")

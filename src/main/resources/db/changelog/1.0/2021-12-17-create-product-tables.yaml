@@ -1,0 +1,244 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create product table
+      author: Bakaluk Alex
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: product_pk
+                    nullable: false
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: product_sku_uq
+                  name: sku
+                  type: VARCHAR(255)
+              - column:
+                  name: image_id
+                  type: BIGINT
+      rollback:
+        - dropTable:
+            tableName: product
+
+  - changeSet:
+      id: Create product details table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product_details
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: product_details_pk
+                    nullable: false
+                    foreignKeyName: product_details_fk
+                    referencedTableName: product
+                    referencedColumnNames: id
+                    deleteCascade: true
+                  name: product_id
+                  type: BIGSERIAL
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: measure_id
+                  type: INT
+      rollback:
+        - dropTable:
+            tableName: product_details
+
+  - changeSet:
+      id: Create product measure table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product_measure
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: product_measure_pk
+                    nullable: false
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: product_measure_name_uq
+                  name: name
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: product_measure
+
+  - changeSet:
+      id: Add foreign key from product details measure_id to measure table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: product_details
+            baseColumnNames: measure_id
+            onDelete: set null
+            referencedTableName: product_measure
+            referencedColumnNames: id
+            constraintName: product_details_measure_fk
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: product_details
+            constraintName: product_details_measure_fk
+
+  - changeSet:
+      id: Create product characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product_characteristic
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: product_characteristic_pk
+                    nullable: false
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: value
+                  type: VARCHAR(510)
+      rollback:
+        - dropTable:
+            tableName: product_characteristic
+
+  - changeSet:
+      id: Add unique constraint to product_characteristic table on (name, value) columns
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: product_characteristic
+            constraintName: product_characteristic_uq
+            columnNames: name, value
+      rollback:
+        - dropUniqueConstraint:
+            tableName: product_characteristic
+            constraintName: product_characteristic_uq
+
+  - changeSet:
+      id: Create link table between product_details and product_characteristic (ManyToMany)
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: products_characteristics
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: products_characteristics_product_id_fk
+                    referencedTableName: product_details
+                    referencedColumnNames: product_id
+                  name: product_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: products_characteristics_characteristic_id_fk
+                    referencedTableName: product_characteristic
+                    referencedColumnNames: id
+                  name: characteristic_id
+                  type: BIGINT
+
+  - changeSet:
+      id: Create price type table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: price_type
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: price_type_pk
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: price_type_uq
+                  name: name
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: price_type
+
+  - changeSet:
+      id: Create table product price
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product_price
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_price_pk
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: product_price_type_fk
+                    referencedTableName: price_type
+                    referencedColumnNames: id
+                  name: price_type_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: NUMERIC(18, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: product_price_details_fk
+                    referencedTableName: product_details
+                    referencedColumnNames: product_id
+                  name: product_details_id
+                  type: BIGINT
+      rollback:
+        - dropTable:
+            tableName: product_price
+
+
+
+
+

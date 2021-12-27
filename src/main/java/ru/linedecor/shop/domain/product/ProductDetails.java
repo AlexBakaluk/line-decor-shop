@@ -16,9 +16,9 @@ import java.util.Set;
 public class ProductDetails {
 
     @Id
+    @Column(name = "product_id")
     private Long id;
 
-    @Column(nullable = false)
     private String description;
 
     @MapsId
@@ -49,6 +49,14 @@ public class ProductDetails {
             inverseJoinColumns = @JoinColumn(name = "characteristic_id")
     )
     private Set<ProductCharacteristic> characteristics = new HashSet<>();
+
+//    @OneToMany(
+//            fetch = FetchType.LAZY,
+//            mappedBy = "productDetails",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<ProductImage> additionalImages = new ArrayList<>();
 
     public void addPrice(ProductPrice price) {
         prices.add(price);

@@ -145,7 +145,7 @@ public class OrganisationServiceTest {
     @Test
     public void givenCreateOrganisation_whenInsertUniqueOrganisation_thenOrganisationShouldBeAddedAndReturnProjection() {
         Organisation newOrganisation = new Organisation();
-        newOrganisation.setId(7L);
+        newOrganisation.setId(7);
         newOrganisation.setName("Unique organisation");
 
         given(organisationRepository.save(any()))
@@ -153,7 +153,7 @@ public class OrganisationServiceTest {
 
         assertThat(organisationService.createNewOrganisation(newOrganisation))
                 .isInstanceOf(OrganisationDto.class)
-                .hasFieldOrPropertyWithValue("id", 7L)
+                .hasFieldOrPropertyWithValue("id", 7)
                 .hasFieldOrPropertyWithValue("name", "Unique organisation");
     }
 
@@ -164,6 +164,6 @@ public class OrganisationServiceTest {
 
         assertThatThrownBy(() -> organisationService.deleteById(1997L))
                 .isInstanceOf(OrganisationNotFoundException.class)
-                .hasMessage("Organisation with id: 1991 not exists");
+                .hasMessage("Organisation with id: 1997 not exists!");
     }
 }

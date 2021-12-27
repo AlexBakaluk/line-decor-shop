@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.linedecor.shop.domain.dto.PriceTypeView;
 import ru.linedecor.shop.domain.product.PriceType;
+import ru.linedecor.shop.exception.product.price.PriceTypeAlreadyExistsException;
 import ru.linedecor.shop.service.product.price.PriceTypeService;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class PriceTypeController {
     @ResponseBody
     @PostMapping
     public PriceType createNewType(@RequestBody PriceType newType) {
-        return typeService.createNewPriceType(newType);
+            return typeService.createNewPriceType(newType);
     }
 
 }
