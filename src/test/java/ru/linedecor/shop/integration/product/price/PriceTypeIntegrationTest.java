@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @WebAppConfiguration
-public class ProductTypeIntegrationTest {
+public class PriceTypeIntegrationTest {
 
     private static final int EXPECTED_TABLE_SIZE = 5;
     private static final String BASE_URL = "/api/product/price/type";

@@ -31,13 +31,6 @@ public class Product {
     @PrimaryKeyJoinColumn
     private ProductDetails details;
 
-//    @ManyToOne(
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL
-//    )
-//    @JoinColumn(name = "image_id")
-//    private ProductImage rootImage;
-
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = { CascadeType.PERSIST, CascadeType.MERGE }

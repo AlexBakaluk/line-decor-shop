@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: Add brand_id column references to product_brand primary key
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: product_details
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: product_details_brand_fk
+                    referencedTableName: product_brand
+                    referencedColumnNames: id
+                  name: brand_id
+                  type: INT
+      rollback:
+        - dropColumn:
+            tableName: product_details
+            columnName: brand_id

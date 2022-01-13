@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: Change category table. Remove parent_id
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: product_category
+            columnName: parent_category_id

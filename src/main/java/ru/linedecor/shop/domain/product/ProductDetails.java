@@ -50,17 +50,18 @@ public class ProductDetails {
     )
     private Set<ProductCharacteristic> characteristics = new HashSet<>();
 
-//    @OneToMany(
-//            fetch = FetchType.LAZY,
-//            mappedBy = "productDetails",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<ProductImage> additionalImages = new ArrayList<>();
+    @JoinColumn(name = "brand_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductBrand brand;
 
     public void addPrice(ProductPrice price) {
         prices.add(price);
         price.setProductDetails(this);
+    }
+
+    public void removePrice(ProductPrice price) {
+        prices.remove(price);
+        price.setProductDetails(null);
     }
 
 }

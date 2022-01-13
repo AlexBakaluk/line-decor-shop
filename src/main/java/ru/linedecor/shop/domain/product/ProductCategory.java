@@ -21,9 +21,6 @@ public class ProductCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "parent_category_id")
-    private Integer parentCategoryId;
-
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "category")
@@ -34,11 +31,11 @@ public class ProductCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductCategory that = (ProductCategory) o;
-        return name.equals(that.name) && Objects.equals(parentCategoryId, that.parentCategoryId);
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, parentCategoryId);
+        return Objects.hash(name);
     }
 }

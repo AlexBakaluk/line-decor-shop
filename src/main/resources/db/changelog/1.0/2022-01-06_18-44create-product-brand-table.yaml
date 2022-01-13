@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create product_brand table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: product_brand
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: product_brand_pk
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: product_brand_name_uq
+                  name: name
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: product_brand
