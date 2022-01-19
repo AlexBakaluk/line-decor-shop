@@ -8,4 +8,8 @@ public class ProductBrandNotFoundException extends RuntimeException {
     public ProductBrandNotFoundException(int id) {
         super(MESSAGE_PREFIX + "id: " + id + MESSAGE_SUFFIX);
     }
+
+    public ProductBrandNotFoundException(String name) {
+        super(MESSAGE_PREFIX + "name: " + name + MESSAGE_SUFFIX);
+    }
 }

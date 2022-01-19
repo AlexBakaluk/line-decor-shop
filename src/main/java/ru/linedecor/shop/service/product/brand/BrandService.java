@@ -6,9 +6,19 @@ import ru.linedecor.shop.domain.product.ProductBrand;
 import java.util.List;
 
 public interface BrandService {
-    List<ProductBrandView> getAllBrandViews();
 
-    ProductBrandView getViewById(int anyInt);
+    List<ProductBrandView> getAllBrandViewsSortByName();
 
-    ProductBrandView createNewBrand(ProductBrand newBrand);
+    ProductBrandView getViewById(int id);
+
+    ProductBrandView getViewByName(String name);
+
+    void createNewBrand(ProductBrand newBrand);
+
+    void updateBrand(ProductBrand updated);
+
+    void deleteBrandById(int id);
+
+    void deleteBrandByName(String name);
+
 }

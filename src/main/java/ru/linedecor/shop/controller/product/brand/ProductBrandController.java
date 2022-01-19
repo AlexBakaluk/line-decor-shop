@@ -3,16 +3,11 @@ package ru.linedecor.shop.controller.product.brand;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.linedecor.shop.domain.dto.ProductBrandView;
 import ru.linedecor.shop.domain.product.ProductBrand;
 import ru.linedecor.shop.service.product.brand.BrandService;
-import ru.linedecor.shop.validation.product.brand.BrandValidator;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,18 +16,12 @@ import java.util.List;
 public class ProductBrandController {
 
     private BrandService brandService;
-    private BrandValidator validator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
 
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @GetMapping
     public List<ProductBrandView> getAll() {
-        return brandService.getAllBrandViews();
+        return brandService.getAllBrandViewsSortByName();
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -42,12 +31,35 @@ public class ProductBrandController {
         return brandService.getViewById(id);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @GetMapping("/name/{name}")
+    public ProductBrandView getByName(@PathVariable String name) {
+        return brandService.getViewByName(name);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ProductBrandView createNew(
-            @Valid @RequestBody ProductBrand newBrand) {
-        return brandService.createNewBrand(newBrand);
+    public void createNew(@RequestBody ProductBrand newBrand) {
+        brandService.createNewBrand(newBrand);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/id/{id}")
+    public void deleteBrand(@PathVariable int id) {
+        brandService.deleteBrandById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/name/{name}")
+    public void deleteBrand(@PathVariable String name) {
+        brandService.deleteBrandByName(name);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping
+    public void updateBrand(@RequestBody ProductBrand updatedBrand) {
+        brandService.updateBrand(updatedBrand);
     }
 
 }

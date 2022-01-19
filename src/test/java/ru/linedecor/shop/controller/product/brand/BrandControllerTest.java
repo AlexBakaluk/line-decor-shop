@@ -3,7 +3,6 @@ package ru.linedecor.shop.controller.product.brand;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +17,7 @@ import ru.linedecor.shop.domain.product.ProductBrand;
 import ru.linedecor.shop.exception.product.brand.ProductBrandAlreadyExistsException;
 import ru.linedecor.shop.exception.product.brand.ProductBrandNotFoundException;
 import ru.linedecor.shop.service.product.brand.BrandService;
+import ru.linedecor.shop.validation.product.brand.EntityValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,6 +49,9 @@ public class BrandControllerTest {
     @MockBean
     private BrandService brandService;
 
+    @MockBean
+    private EntityValidator validator;
+
     @BeforeEach
     public void setUp() {
         BrandTestUtils.fillBrandViewsListWithTestData(PRODUCT_BRAND_VIEW_LIST);
@@ -62,7 +66,7 @@ public class BrandControllerTest {
     @Test
     @SneakyThrows
     public void givenGetAllBrands_ShouldReturnListOfBrandViewsWithExpectedSize() {
-        given(brandService.getAllBrandViews())
+        given(brandService.getAllBrandViewsSortByName())
                 .willReturn(PRODUCT_BRAND_VIEW_LIST);
 
         mockMvc.perform(get(BASE_URL))
@@ -102,8 +106,7 @@ public class BrandControllerTest {
     @SneakyThrows
     public void givenCreateNewNotUniqueBrand_ShouldReturnExceptionMessageWithStatusBadRequest() {
         val NOT_UNIQUE_BRAND = new ProductBrand(EXISTED_BRAND_NAME);
-        given(brandService.createNewBrand(NOT_UNIQUE_BRAND))
-                .willThrow(new ProductBrandAlreadyExistsException(EXISTED_BRAND_NAME));
+//        given(() -> brandService.createNewBrand(NOT_UNIQUE_BRAND))
 
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,8 +120,8 @@ public class BrandControllerTest {
     public void givenCreateNewNotValidBrand_ShouldReturnExceptionMessageWithStatusBadRequest() {
         val NOT_VALID_BRAND_NAME = "";
         val NOT_VALID_BRAND = new ProductBrand(NOT_VALID_BRAND_NAME);
-        given(brandService.createNewBrand(NOT_VALID_BRAND))
-                .willThrow(new ProductBrandAlreadyExistsException(EXISTED_BRAND_NAME));
+//        given(brandService.createNewBrand(NOT_VALID_BRAND))
+//                .willThrow(new NotValidBrandException("Name of brand must not be null or empty"));
 
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
