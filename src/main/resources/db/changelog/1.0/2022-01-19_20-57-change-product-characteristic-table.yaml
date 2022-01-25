@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: Rename table from product_characteristic to characteristic
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - renameTable:
+            oldTableName: product_characteristic
+            newTableName: characteristic
+
+  - changeSet:
+      id: Drop product_characteristic_uq unique constraint
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropUniqueConstraint:
+              tableName: characteristic
+              constraintName: product_characteristic_uq
+
+  - changeSet:
+      id: Drop value column
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: characteristic
+            columns:
+              - column:
+                  name: value
+
+  - changeSet:
+      id: Add type column
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: characteristic
+            columns:
+              - column:
+                  name: type
+                  type: INTEGER
+
+  - changeSet:
+      id: Add unique constraint on name column
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: characteristic
+            constraintName: product_characteristic_uq
+            columnNames: name

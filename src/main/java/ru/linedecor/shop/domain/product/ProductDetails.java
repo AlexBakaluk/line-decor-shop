@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ProductDetails {
     @Column(name = "product_id")
     private Long id;
 
+    @NotEmpty(message = "Bla")
     private String description;
 
     @MapsId
@@ -48,7 +50,7 @@ public class ProductDetails {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "characteristic_id")
     )
-    private Set<ProductCharacteristic> characteristics = new HashSet<>();
+    private Set<Characteristic> characteristics = new HashSet<>();
 
     @JoinColumn(name = "brand_id")
     @ManyToOne(fetch = FetchType.LAZY)

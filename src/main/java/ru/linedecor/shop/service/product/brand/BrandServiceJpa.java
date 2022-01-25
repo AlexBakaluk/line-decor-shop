@@ -11,7 +11,7 @@ import ru.linedecor.shop.domain.product.ProductBrand;
 import ru.linedecor.shop.exception.product.brand.ProductBrandAlreadyExistsException;
 import ru.linedecor.shop.exception.product.brand.ProductBrandNotFoundException;
 import ru.linedecor.shop.repository.product.brand.BrandRepository;
-import ru.linedecor.shop.validation.product.brand.EntityValidator;
+import ru.linedecor.shop.validation.EntityValidator;
 
 import java.util.List;
 import java.util.Objects;

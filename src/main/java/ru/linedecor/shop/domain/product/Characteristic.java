@@ -4,8 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.NaturalId;
+import ru.linedecor.shop.validation.annotations.CharacteristicTypeValue;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,18 +19,22 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_characteristic")
-public class ProductCharacteristic {
+@Table(name = "characteristic")
+public class Characteristic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private String value;
+    @Enumerated(EnumType.ORDINAL)
+    private CharacteristicType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private CharacteristicGroup characteristicGroup;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -37,13 +45,12 @@ public class ProductCharacteristic {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductCharacteristic that = (ProductCharacteristic) o;
-        return name.equals(that.name) && value.equals(that.value);
+        Characteristic that = (Characteristic) o;
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, value);
+        return Objects.hash(name);
     }
-
 }

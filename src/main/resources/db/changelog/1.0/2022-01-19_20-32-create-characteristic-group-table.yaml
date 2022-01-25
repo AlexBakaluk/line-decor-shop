@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create characteristic_group table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: characteristic_group
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: characteristic_group_pk
+                    nullable: false
+                  name: id
+                  type: SERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: characteristic_group_name_uq
+                  name: name
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: characteristic_group

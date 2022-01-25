@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: Add column with name group_id to characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: characteristic
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: characteristic_group_fk
+                    referencedTableName: characteristic_group
+                    referencedColumnNames: id
+                  name: group_id
+                  type: INT
+      rollback:
+        - dropColumn:
+            tableName: characteristic
+            columnName: group_id

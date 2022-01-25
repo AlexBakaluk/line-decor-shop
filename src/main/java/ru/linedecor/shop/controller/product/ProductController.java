@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.linedecor.shop.domain.dto.ProductView;
+import ru.linedecor.shop.domain.product.Product;
 import ru.linedecor.shop.service.product.ProductService;
 
 @AllArgsConstructor
@@ -32,6 +33,12 @@ public class ProductController {
             @PageableDefault(size = 20, sort = {"name"}) Pageable pageable,
             @PathVariable String nameOrSku) {
         return productService.getProductPageByNameOrSkuLike(nameOrSku, pageable);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping
+    public void createProduct(@RequestBody Product newProduct) {
+        productService.createProduct(newProduct);
     }
 
 }

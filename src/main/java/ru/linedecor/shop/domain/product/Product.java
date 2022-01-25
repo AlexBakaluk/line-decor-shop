@@ -3,6 +3,8 @@ package ru.linedecor.shop.domain.product;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,12 +18,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Name is required")
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty(message = "Name is required")
     @Column(nullable = false, unique = true)
     private String sku;
 
+    @NotNull(message = "Please, fill product details")
     @OneToOne(
             mappedBy = "product",
             fetch = FetchType.LAZY,

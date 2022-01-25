@@ -1,4 +1,4 @@
-package ru.linedecor.shop.validation.product.brand;
+package ru.linedecor.shop.validation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
