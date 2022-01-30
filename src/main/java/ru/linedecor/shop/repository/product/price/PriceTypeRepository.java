@@ -8,11 +8,17 @@ import ru.linedecor.shop.domain.dto.PriceTypeView;
 import ru.linedecor.shop.domain.product.PriceType;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
 public interface PriceTypeRepository extends CrudRepository<PriceType, Integer> {
 
-    @Query("select pt.id as id, pt.name as name from PriceType pt")
-    List<PriceTypeView> getAllTypesProjections();
+    @Query(value = "select pt.id as id, pt.name as name from PriceType pt")
+    List<PriceTypeView> getAllTypeViews();
+
+    @Query(value = "select pt.id as id, pt.name as name from PriceType pt where pt.id = :id")
+    Optional<PriceTypeView> getViewById(Integer id);
+
+    boolean existsByNameIgnoreCase(String name);
 }

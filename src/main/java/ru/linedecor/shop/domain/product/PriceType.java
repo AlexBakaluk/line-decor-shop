@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.linedecor.shop.dto.request.product.price.type.PriceTypeDto;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -22,6 +23,10 @@ public class PriceType {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    public PriceType(PriceTypeDto typeDto) {
+        this.name = typeDto.getName();
+    }
 
     @Override
     public boolean equals(Object o) {
