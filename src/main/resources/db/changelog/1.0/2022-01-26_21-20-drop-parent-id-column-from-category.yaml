@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: Drop parent id column from category
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: category
+            columnName: parent_category_id

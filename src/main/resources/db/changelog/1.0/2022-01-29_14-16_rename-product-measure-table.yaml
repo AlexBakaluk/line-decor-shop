@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: Rename product_measure table to measure
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - renameTable:
+            oldTableName: product_measure
+            newTableName: measure

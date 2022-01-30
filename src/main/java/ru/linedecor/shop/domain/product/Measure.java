@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.linedecor.shop.dto.request.product.measure.MeasureRequestDto;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,8 +14,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_measure")
-public class ProductMeasure {
+@Table(name = "measure")
+public class Measure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +24,15 @@ public class ProductMeasure {
     @Column(unique = true, nullable = false)
     private String name;
 
+    public Measure(MeasureRequestDto requestDto) {
+        this.name = requestDto.getName();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductMeasure that = (ProductMeasure) o;
+        Measure that = (Measure) o;
         return name.equals(that.name);
     }
 

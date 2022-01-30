@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: Drop column category_id from product
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: product
+            columnName: category_id
+
+  - changeSet:
+      id: Create link table (Many to many) products_categories
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - createTable:
+            tableName: products_categories
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: product_fk
+                    referencedTableName: product
+                    referencedColumnNames: id
+                    deleteCascade: true
+                    nullable: false
+                  name: product_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    foreignKeyName: category_fk
+                    referencedTableName: category
+                    referencedColumnNames: id
+                    deleteCascade: true
+                    nullable: false
+                  name: category_id
+                  type: INT
+      rollback:
+        - dropTable:
+            tableName: products_categories

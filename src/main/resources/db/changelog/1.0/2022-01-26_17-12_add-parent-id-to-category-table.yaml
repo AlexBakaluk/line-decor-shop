@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: Add parent_category_id column references to column id
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: category
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: parent_category_fk
+                    referencedTableName: category
+                    referencedColumnNames: id
+                    deleteCascade: true
+                  name: parent_category_id
+                  type: INT
+      rollback:
+        - dropColumn:
+            tableName: category
+            columnName: parent_category_id

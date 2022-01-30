@@ -1,18 +1,20 @@
 package ru.linedecor.shop.domain.product;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_category")
-public class ProductCategory {
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +23,12 @@ public class ProductCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "category")
-    private List<Product> products = new ArrayList<>();
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductCategory that = (ProductCategory) o;
-        return name.equals(that.name);
+        Category category = (Category) o;
+        return name.equals(category.name);
     }
 
     @Override

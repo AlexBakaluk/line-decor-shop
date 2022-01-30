@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: Rename product_category table to category
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - renameTable:
+            oldTableName: product_category
+            newTableName: category
