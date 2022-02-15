@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = {ProductBrandController.class})
+@WebMvcTest(controllers = {BrandController.class})
 public class BrandControllerTest {
 
     private static final String BASE_URL = "/api/brand";

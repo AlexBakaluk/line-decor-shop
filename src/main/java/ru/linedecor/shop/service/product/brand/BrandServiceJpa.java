@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.linedecor.shop.domain.dto.ProductBrandView;
 import ru.linedecor.shop.domain.product.ProductBrand;
+import ru.linedecor.shop.dto.request.product.brand.BrandDto;
 import ru.linedecor.shop.exception.product.brand.ProductBrandAlreadyExistsException;
 import ru.linedecor.shop.exception.product.brand.ProductBrandNotFoundException;
 import ru.linedecor.shop.repository.product.brand.BrandRepository;
-import ru.linedecor.shop.validation.EntityValidator;
+import ru.linedecor.shop.validation.product.brand.Validator;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ import java.util.Objects;
 public class BrandServiceJpa implements BrandService{
 
     private final BrandRepository brandRepository;
-    private final EntityValidator<ProductBrand> entityValidator;
+    private final Validator brandValidator;
 
     @Transactional(readOnly = true)
     @Override
@@ -43,23 +44,30 @@ public class BrandServiceJpa implements BrandService{
                 .orElseThrow(() -> new ProductBrandNotFoundException(name));
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public void createNewBrand(ProductBrand newBrand) {
-        entityValidator.validate(newBrand);
-        checkBrandIsUniqueOrElseThrowBrandAlreadyExistsException(newBrand);
+    public ProductBrand getBrandById(int id) {
+        return findBrandByIdOrElseThrowException(id);
+    }
+
+    @Override
+    public void createNewBrand(BrandDto brandDto) {
+        brandValidator.validate(brandDto);
+        checkBrandIsUniqueOrElseThrowBrandAlreadyExistsException(brandDto);
+        ProductBrand newBrand = new ProductBrand(brandDto);
         brandRepository.save(newBrand);
     }
 
 
     @Override
-    public void updateBrand(ProductBrand updated) {
+    public void updateBrand(BrandDto updated) {
         Objects.requireNonNull(updated.getId(), "For update id must not be null!");
-        checkBrandIsUniqueOrElseThrowBrandAlreadyExistsException(updated);
+        brandValidator.validate(updated);
         ProductBrand fromDB = findBrandByIdOrElseThrowException(updated.getId());
         BeanUtils.copyProperties(updated, fromDB);
     }
 
-    private void checkBrandIsUniqueOrElseThrowBrandAlreadyExistsException(ProductBrand newBrand) {
+    private void checkBrandIsUniqueOrElseThrowBrandAlreadyExistsException(BrandDto newBrand) {
         val brandName = newBrand.getName();
         var isExists = brandRepository.existsByName(brandName);
         if (isExists) {

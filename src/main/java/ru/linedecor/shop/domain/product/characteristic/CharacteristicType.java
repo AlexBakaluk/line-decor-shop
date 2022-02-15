@@ -1,8 +1,8 @@
-package ru.linedecor.shop.domain.product;
+package ru.linedecor.shop.domain.product.characteristic;
 
 public enum CharacteristicType {
 
-    NUMERIC("Numeric"), STRING("String");
+    NUMERIC("Numeric"), STRING("String"), ARRAY("Array");
 
     private final String name;
 
@@ -20,6 +20,8 @@ public enum CharacteristicType {
                 return NUMERIC;
             case "String":
                 return STRING;
+            case "Array":
+                return ARRAY;
             default:
                 throw new IllegalArgumentException("Unsupported type name: " + name);
         }

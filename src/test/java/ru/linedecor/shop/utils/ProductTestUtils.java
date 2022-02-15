@@ -1,9 +1,12 @@
 package ru.linedecor.shop.utils;
 
-import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.data.domain.*;
-import ru.linedecor.shop.domain.dto.*;
+import ru.linedecor.shop.domain.dto.ProductCharacteristicDto;
+import ru.linedecor.shop.domain.dto.ProductDetailsView;
+import ru.linedecor.shop.domain.dto.ProductMeasureDto;
+import ru.linedecor.shop.domain.dto.ProductPriceDto;
+import ru.linedecor.shop.dto.response.product.ProductView;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -41,28 +44,23 @@ public class ProductTestUtils {
 
 
     private static ProductView generateProductView(int productId) {
-        return new ProductView() {
-            @Override
-            public Long getId() {
-                return (long) productId;
-            }
-
-            @Override
-            public String getName() {
-                return "Test product " + productId;
-            }
-
-            @Override
-            public String getSku() {
-                return "test sku " + productId;
-            }
-
-            @SneakyThrows
-            @Override
-            public byte[] getRootImage() {
-                return new byte[0];
-            }
-        };
+//        return new ProductView() {
+//            @Override
+//            public Long getId() {
+//                return (long) productId;
+//            }
+//
+//            @Override
+//            public String getName() {
+//                return "Test product " + productId;
+//            }
+//
+//            @Override
+//            public String getSku() {
+//                return "test sku " + productId;
+//            }
+//        };
+        return null;
     }
 
     public static Page<ProductView> getAllWhereNameLike(int pageNumber, int pageSize, String nameOrSku) {
@@ -85,14 +83,14 @@ public class ProductTestUtils {
         return views;
     }
 
-    public static ProductDetailsDto createTestProductDetailsWithCharacteristicsAndMeasure() {
+    public static ProductDetailsView createTestProductDetailsWithCharacteristicsAndMeasure() {
         String description = createProductDescription();
-        return new ProductDetailsDto(1L, description, createProductMeasureDto(), null, createCharacteristicsDto());
+        return new ProductDetailsView(1L, description, createProductMeasureDto(), null, createCharacteristicsDto());
     }
 
-    public static ProductDetailsDto createTestProductFullDetails() {
+    public static ProductDetailsView createTestProductFullDetails() {
         String description = createProductDescription();
-        return new ProductDetailsDto(1L, description, createProductMeasureDto(), createProductPricesDto(), createCharacteristicsDto());
+        return new ProductDetailsView(1L, description, createProductMeasureDto(), createProductPricesDto(), createCharacteristicsDto());
     }
 
 

@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.linedecor.shop.domain.dto.product.characteristic.CharacteristicGroupView;
-import ru.linedecor.shop.domain.product.CharacteristicGroup;
+import ru.linedecor.shop.domain.product.characteristic.CharacteristicGroup;
 
 import java.util.List;
 import java.util.Optional;

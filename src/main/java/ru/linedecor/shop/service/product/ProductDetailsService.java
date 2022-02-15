@@ -1,10 +1,14 @@
 package ru.linedecor.shop.service.product;
 
-import ru.linedecor.shop.domain.dto.ProductDetailsDto;
+import ru.linedecor.shop.domain.dto.ProductDetailsView;
+import ru.linedecor.shop.domain.product.ProductDetails;
+import ru.linedecor.shop.dto.request.product.ProductDetailsDto;
 
 public interface ProductDetailsService {
 
-    ProductDetailsDto getProductDetailsWithCharacteristicsAndMeasureByProductId(long productId);
+    ProductDetailsView getProductDetailsWithCharacteristicsAndMeasureByProductId(long productId);
 
-    ProductDetailsDto getFullProductDetails(long productId);
+    ProductDetailsView getFullProductDetails(long productId);
+
+    ProductDetails createProductDetails(ProductDetailsDto details);
 }

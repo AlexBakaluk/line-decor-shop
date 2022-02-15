@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: Drop column (image_id) from product table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: product
+            columnName: image_id

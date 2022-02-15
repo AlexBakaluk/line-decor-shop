@@ -1,15 +1,17 @@
 package ru.linedecor.shop.domain.product;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.linedecor.shop.domain.product.characteristic.ProductsCharacteristics;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,7 +22,6 @@ public class ProductDetails {
     @Column(name = "product_id")
     private Long id;
 
-    @NotEmpty(message = "Bla")
     private String description;
 
     @MapsId
@@ -31,7 +32,7 @@ public class ProductDetails {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "measure_id")
-    private ProductMeasure measure;
+    private Measure measure;
 
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -41,16 +42,12 @@ public class ProductDetails {
     )
     private List<ProductPrice> prices = new ArrayList<>();
 
-    @ManyToMany(
+    @OneToMany(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-    )
-    @JoinTable(
-            name = "products_characteristics",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "characteristic_id")
-    )
-    private Set<Characteristic> characteristics = new HashSet<>();
+            mappedBy = "details",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<ProductsCharacteristics> characteristics = new ArrayList<>();
 
     @JoinColumn(name = "brand_id")
     @ManyToOne(fetch = FetchType.LAZY)

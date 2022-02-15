@@ -1,6 +1,5 @@
 package ru.linedecor.shop.repository.product.price;
 
-import com.vladmihalcea.sql.SQLStatementCountValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,11 +10,9 @@ import ru.linedecor.shop.domain.product.PriceType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.List;
 
-import static com.vladmihalcea.sql.SQLStatementCountValidator.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class PriceTypeRepositoryTest {
@@ -42,7 +39,7 @@ class PriceTypeRepositoryTest {
     @DisplayName("Should find all types and return its projections")
     @Test
     public void givenGetAllProjections_whenTableHasData_thenShouldReturnListDto() {
-        assertThat(repository.getAllTypesProjections())
+        assertThat(repository.getAllTypeViews())
                 .hasSize(EXPECTED_TABLE_SIZE)
                 .isInstanceOf(List.class)
                 .hasOnlyElementsOfType(PriceTypeView.class);

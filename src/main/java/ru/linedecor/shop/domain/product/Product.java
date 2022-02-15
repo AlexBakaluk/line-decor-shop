@@ -1,10 +1,12 @@
 package ru.linedecor.shop.domain.product;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,15 +20,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Name is required")
     @Column(nullable = false)
     private String name;
 
-    @NotEmpty(message = "Name is required")
     @Column(nullable = false, unique = true)
     private String sku;
 
-    @NotNull(message = "Please, fill product details")
     @OneToOne(
             mappedBy = "product",
             fetch = FetchType.LAZY,
@@ -36,12 +35,20 @@ public class Product {
     @PrimaryKeyJoinColumn
     private ProductDetails details;
 
-    @ManyToOne(
+    @ManyToMany(
             fetch = FetchType.LAZY,
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE }
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
-    @JoinColumn(name = "category_id")
-    private ProductCategory category;
+    @JoinTable(
+            name = "products_categories",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories;
 
+    public void setDetails(ProductDetails details) {
+        this.details = details;
+        details.setProduct(this);
+    }
 
 }

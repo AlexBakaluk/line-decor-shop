@@ -1,4 +1,4 @@
-package ru.linedecor.shop.domain.dto;
+package ru.linedecor.shop.dto.response.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -11,6 +11,10 @@ public interface ProductView {
 
     String getSku();
 
-    byte[] getRootImage();
+    String getDescription();
+
+    String getBrandName();
+
+    String getMeasureName();
 
 }

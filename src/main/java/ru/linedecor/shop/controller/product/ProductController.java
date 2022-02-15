@@ -7,13 +7,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.linedecor.shop.domain.dto.ProductView;
-import ru.linedecor.shop.domain.product.Product;
+import ru.linedecor.shop.dto.response.product.ProductView;
 import ru.linedecor.shop.service.product.ProductService;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/api/product", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/product")
 public class ProductController {
 
     private ProductService productService;
@@ -22,7 +21,7 @@ public class ProductController {
     @ResponseBody
     @GetMapping
     public Page<ProductView> getProductPage(
-            @PageableDefault(size = 20, sort = {"name"}) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "name") Pageable pageable) {
         return productService.getProductPage(pageable);
     }
 
@@ -36,9 +35,22 @@ public class ProductController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping
-    public void createProduct(@RequestBody Product newProduct) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createProduct(@RequestBody ru.linedecor.shop.dto.request.product.ProductDto newProduct) {
         productService.createProduct(newProduct);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(path = "/id/{id}/name/{newName}")
+    public void updateProductName(@PathVariable Long id, @PathVariable String newName) {
+        productService.updateProductNameById(id, newName);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/fullDetails/id/{id}")
+    public ProductView getProductWithDetails(@PathVariable Long id) {
+        return productService.getProductWithDetails(id);
     }
 
 }

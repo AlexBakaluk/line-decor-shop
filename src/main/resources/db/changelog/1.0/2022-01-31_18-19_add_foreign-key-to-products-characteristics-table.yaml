@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: Add foreign key referenses from characteristic_id to id in characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: products_characteristics_characteristic_fk
+            referencedTableName: characteristic
+            referencedColumnNames: id
+            deleteCascade: true
+            baseTableName: products_characteristics
+            baseColumnNames: characteristic_id
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: products_characteristics
+            constraintName: products_characteristics_characteristic_fk

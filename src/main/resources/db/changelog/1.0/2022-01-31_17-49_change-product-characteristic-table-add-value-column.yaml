@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: Add column (value) to products_characteristics table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: products_characteristics
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: characteristic_value
+                  type: VARCHAR(510)
+      rollback:
+        - dropColumn:
+            tableName: products_characteristics
+            columnName: characteristic_value
+
+  - changeSet:
+      id: Rename column (product_id) to details_product_id
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - renameColumn:
+            tableName: products_characteristics
+            oldColumnName: product_id
+            newColumnName: details_product_id
+
+  - changeSet:
+      id: Add unique constraint to all columns on products_characteristics table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: products_characteristics
+            columnNames: details_product_id, characteristic_id, characteristic_value
+            constraintName: products_characteristics_uq
+      rollback:
+        - dropUniqueConstraint:
+            tableName: products_characteristics
+            constraintName: products_characteristics_uq

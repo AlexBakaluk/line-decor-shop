@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
+import ru.linedecor.shop.dto.request.product.brand.BrandDto;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_brand")
+@Table(name = "product_brand",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name"})
+        })
 public class ProductBrand {
 
     @Id
@@ -31,6 +33,10 @@ public class ProductBrand {
 
     public ProductBrand(String name) {
         this.name = name;
+    }
+
+    public ProductBrand(BrandDto dto) {
+        this.name = dto.getName();
     }
 
     @OneToMany(

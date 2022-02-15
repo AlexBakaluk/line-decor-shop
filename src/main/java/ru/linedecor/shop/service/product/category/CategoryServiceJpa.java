@@ -14,6 +14,7 @@ import ru.linedecor.shop.repository.product.category.CategoryRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -75,5 +76,16 @@ public class CategoryServiceJpa implements CategoryService {
     public void deleteById(int id) {
         Category fromDB = findCategoryByIdOrElseThrowException(id);
         categoryRepository.delete(fromDB);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Set<Category> getCategoriesByIds(Set<Integer> categoryIds) {
+        return categoryRepository.findAllByIdIn(categoryIds);
+    }
+
+    @Override
+    public List<CategoryView> getAllCategoryViewsByProductId(Long productId) {
+        return null;
     }
 }

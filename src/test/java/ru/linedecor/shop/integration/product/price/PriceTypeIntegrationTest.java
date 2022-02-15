@@ -10,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import ru.linedecor.shop.domain.product.PriceType;
 import ru.linedecor.shop.repository.product.price.PriceTypeRepository;
@@ -83,9 +81,9 @@ public class PriceTypeIntegrationTest {
         assertInsertCount(0);
         assertDeleteCount(0);
         assertUpdateCount(0);
-        verify(service, times(1)).getAllTypes();
+        verify(service, times(1)).getAllTypeViews();
         verifyNoMoreInteractions(service);
-        verify(repository, times(1)).getAllTypesProjections();
+        verify(repository, times(1)).getAllTypeViews();
     }
 
     @Test

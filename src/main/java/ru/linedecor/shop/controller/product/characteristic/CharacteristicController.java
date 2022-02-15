@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.linedecor.shop.domain.dto.product.characteristic.CharacteristicGroupView;
-import ru.linedecor.shop.domain.product.CharacteristicGroup;
 import ru.linedecor.shop.dto.request.product.characteristic.CharacteristicRequestDto;
 import ru.linedecor.shop.dto.response.product.characteristic.CharacteristicView;
 import ru.linedecor.shop.service.product.characteristic.CharacteristicService;

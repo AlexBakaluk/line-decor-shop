@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.linedecor.shop.domain.dto.product.characteristic.CharacteristicGroupView;
-import ru.linedecor.shop.domain.product.CharacteristicGroup;
+import ru.linedecor.shop.domain.product.characteristic.CharacteristicGroup;
 import ru.linedecor.shop.dto.request.product.characteristic.CharacteristicGroupRequestDto;
 import ru.linedecor.shop.exception.product.characteristic.CharacteristicGroupAlreadyExistsException;
 import ru.linedecor.shop.exception.product.characteristic.CharacteristicGroupNotFoundException;

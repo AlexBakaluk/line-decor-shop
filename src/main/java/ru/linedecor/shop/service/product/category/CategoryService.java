@@ -1,9 +1,11 @@
 package ru.linedecor.shop.service.product.category;
 
+import ru.linedecor.shop.domain.product.Category;
 import ru.linedecor.shop.dto.request.product.category.CategoryRequestDto;
 import ru.linedecor.shop.dto.response.product.category.CategoryView;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryService {
 
@@ -19,4 +21,7 @@ public interface CategoryService {
 
     void deleteById(int id);
 
+    Set<Category> getCategoriesByIds(Set<Integer> categoryIds);
+
+    List<CategoryView> getAllCategoryViewsByProductId(Long productId);
 }

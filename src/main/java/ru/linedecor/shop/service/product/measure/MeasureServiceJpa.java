@@ -70,6 +70,12 @@ public class MeasureServiceJpa implements MeasureService {
         measureRepository.delete(forDelete);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Measure getMeasureById(Integer measureId) {
+        return findByIdOrElseThrowException(measureId);
+    }
+
     private Measure findByIdOrElseThrowException(int id) {
         return measureRepository.findById(id)
                 .orElseThrow(throwMeasureNotFoundException(id));

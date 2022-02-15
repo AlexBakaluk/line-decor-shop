@@ -13,17 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.linedecor.shop.domain.dto.PriceTypeView;
 import ru.linedecor.shop.domain.product.PriceType;
-import ru.linedecor.shop.exception.product.price.PriceTypeAlreadyExistsException;
 import ru.linedecor.shop.exception.product.price.PriceTypesTableIsEmptyException;
 import ru.linedecor.shop.service.product.price.PriceTypeService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,7 +65,7 @@ class PriceTypeControllerTest {
     @Test
     @SneakyThrows
     public void givenGetAllTypes_whenTypesTableHasData_thenShouldReturnDtoList() {
-        given(service.getAllTypes())
+        given(service.getAllTypeViews())
                 .willReturn(PRICE_TYPE_DTO_LIST);
 
         mockMvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
@@ -80,7 +78,7 @@ class PriceTypeControllerTest {
     @Test
     @SneakyThrows
     public void givenGetAllTypes_whenTypesTableIsEmpty_thenShouldHandlePriceTypesTableIsEmptyException() {
-        given(service.getAllTypes())
+        given(service.getAllTypeViews())
                 .willThrow(new PriceTypesTableIsEmptyException());
 
         mockMvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
@@ -96,8 +94,8 @@ class PriceTypeControllerTest {
         createdType.setId(3);
         createdType.setName("Created");
 
-        given(service.createNewPriceType(NEW_UNIQUE_TYPE))
-                .willReturn(createdType);
+//        given(service.createNewPriceType(NEW_UNIQUE_TYPE))
+//                .willReturn(createdType);
 
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -113,8 +111,8 @@ class PriceTypeControllerTest {
     public void givenSaveNewType_whenNewTypeNotUnique_thenShouldHandlePriceTypeAlreadyExistsException() {
         String notUniqueName = PRICE_TYPE_DTO_LIST.get(0).getName();
 
-        given(service.createNewPriceType(any()))
-                .willThrow(new PriceTypeAlreadyExistsException(notUniqueName));
+//        given(service.createNewPriceType(any()))
+//                .willThrow(new PriceTypeAlreadyExistsException(notUniqueName));
 
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)

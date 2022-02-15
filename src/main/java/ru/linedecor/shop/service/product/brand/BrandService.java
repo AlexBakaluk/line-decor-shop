@@ -2,6 +2,7 @@ package ru.linedecor.shop.service.product.brand;
 
 import ru.linedecor.shop.domain.dto.ProductBrandView;
 import ru.linedecor.shop.domain.product.ProductBrand;
+import ru.linedecor.shop.dto.request.product.brand.BrandDto;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ public interface BrandService {
 
     ProductBrandView getViewByName(String name);
 
-    void createNewBrand(ProductBrand newBrand);
+    ProductBrand getBrandById(int id);
 
-    void updateBrand(ProductBrand updated);
+    void createNewBrand(BrandDto newBrand);
+
+    void updateBrand(BrandDto updated);
 
     void deleteBrandById(int id);
 

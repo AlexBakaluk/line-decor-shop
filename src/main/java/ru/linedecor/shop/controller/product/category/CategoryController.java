@@ -55,4 +55,11 @@ public class CategoryController {
         categoryService.deleteById(id);
     }
 
+    @GetMapping(path = "/productId/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<CategoryView> getCategoriesByProductId(@PathVariable Long productId) {
+        return categoryService.getAllCategoryViewsByProductId(productId);
+    }
+
 }

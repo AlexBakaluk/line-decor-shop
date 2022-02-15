@@ -1,8 +1,6 @@
 package ru.linedecor.shop.validation.annotations.validator;
 
-import lombok.val;
-import ru.linedecor.shop.domain.product.CharacteristicType;
-import ru.linedecor.shop.validation.annotations.CharacteristicTypeValue;
+import ru.linedecor.shop.domain.product.characteristic.CharacteristicType;
 import ru.linedecor.shop.validation.annotations.CharacteristicTypeValue;
 
 import javax.validation.ConstraintValidator;

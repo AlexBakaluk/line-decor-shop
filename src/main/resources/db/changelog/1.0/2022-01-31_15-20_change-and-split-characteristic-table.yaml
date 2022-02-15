@@ -1,0 +1,137 @@
+databaseChangeLog:
+  - changeSet:
+      id: Rename characteristic table to characteristic_value
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - renameTable:
+            oldTableName: characteristic
+            newTableName: characteristic_value
+      rollback:
+        - renameTable:
+            newTableName: characteristic
+            oldTableName: characteristic_value
+
+  - changeSet:
+      id: Drop columns (name, type, group_id) from characteristic_value table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - dropColumn:
+            tableName: characteristic_value
+            columns:
+              - column:
+                  name: name
+              - column:
+                  name: type
+              - column:
+                  name: group_id
+
+  - changeSet:
+      id: Add column (value) to characteristic_value table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: characteristic_value
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: value
+                  type: VARCHAR (510)
+      rollback:
+        - dropColumn:
+            tableName: characteristic_value
+            columnName: value
+
+  - changeSet:
+      id: Create characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      comment: This table need to collect unique charcteristic names
+      changes:
+        - createTable:
+            tableName: characteristic
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: characteristic_pk
+                    nullable: false
+                  name: id
+                  type: BIGSERIAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: type
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: characteristic_group_fk
+                    referencedTableName: characteristic_group
+                    referencedColumnNames: id
+                  name: group_id
+                  type: INTEGER
+      rollback:
+        - dropTable:
+            tableName: characteristic
+
+  - changeSet:
+      id: Add unique contraint to columns (name, type, group_id) on characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: characteristic
+            constraintName: characteristic_uq
+            columnNames: name, type, group_id
+      rollback:
+        - dropUniqueConstraint:
+            tableName: characteristic
+            constraintName: characteristic_uq
+
+  - changeSet:
+      id: Add column (characteristic_id) referenced from characteristic_value to characteristic table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addColumn:
+            tableName: characteristic_value
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: characteristic_value_characteristic_fk
+                    nullable: false
+                    referencedTableName: characteristic
+                    referencedColumnNames: id
+                  name: characteristic_id
+                  type: BIGINT
+      rollback:
+        - dropColumn:
+            tableName: characteristic_value
+            columnName: characteristic_id
+
+  - changeSet:
+      id: Create unique constraint to columns (characteristic_id, value) on characteristic_value table
+      author: Alex Bakaluk
+      context: dev or test
+      changes:
+        - addUniqueConstraint:
+            tableName: characteristic_value
+            constraintName: characteristic_value_uq
+            columnNames: characteristic_id, value
+      rollback:
+        - dropUniqueConstraint:
+            tableName: characteristic_value
+            constraintName: characteristic_value_uq
+
+
+
+

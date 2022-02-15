@@ -1,5 +1,6 @@
 package ru.linedecor.shop.service.product.measure;
 
+import ru.linedecor.shop.domain.product.Measure;
 import ru.linedecor.shop.dto.request.product.measure.MeasureRequestDto;
 import ru.linedecor.shop.dto.response.product.measure.MeasureView;
 
@@ -17,4 +18,5 @@ public interface MeasureService {
 
     void deleteMeasureById(int id);
 
+    Measure getMeasureById(Integer measureId);
 }

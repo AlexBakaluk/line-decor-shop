@@ -1,23 +1,20 @@
-package ru.linedecor.shop.domain.product;
+package ru.linedecor.shop.domain.product.characteristic;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.NaturalId;
-import ru.linedecor.shop.validation.annotations.CharacteristicTypeValue;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "characteristic")
 public class Characteristic {
@@ -26,7 +23,7 @@ public class Characteristic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false, updatable = false)
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
@@ -36,21 +33,24 @@ public class Characteristic {
     @JoinColumn(name = "group_id")
     private CharacteristicGroup characteristicGroup;
 
-    @ManyToMany(
+    @OneToMany(
             fetch = FetchType.LAZY,
-            mappedBy = "characteristics")
-    private Set<ProductDetails> details = new HashSet<>();
+            mappedBy = "characteristic",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProductsCharacteristics> products = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Characteristic that = (Characteristic) o;
-        return name.equals(that.name);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return getClass().hashCode();
     }
 }
